@@ -2,6 +2,7 @@ import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input } 
 import { connect } from 'react-redux';
 import { addItem } from '../actions/itemActions';
 import { useState } from "react";
+import PropTypes from 'prop-types';
 
 const ItemModal = (props) => {
 
@@ -37,10 +38,14 @@ const ItemModal = (props) => {
   
   return (
     <div>
+    { props.isAuthenticated ?  
         <Button color="dark"
                 style={{marginBottom:'2rem'}}
                 onClick={toggle}
-        > Add Item </Button>
+        > Add Item </Button> :
+        <h4 className="mb-3 ml-4">Please login to manage Items</h4> }
+
+       
 
         <Modal isOpen={state.modal}
                 toggle={toggle} >
@@ -66,8 +71,13 @@ const ItemModal = (props) => {
   )
 } 
 
+ItemModal.propTypes = {
+    isAuthenticated: PropTypes.bool
+}
+
 const mapStateToProps = state => ({
-    item: state.item
+    item: state.item,
+    isAuthenticated: state.auth.isAuthenticated
 })
 
 export default connect(mapStateToProps,{ addItem }) (ItemModal);
